@@ -119,7 +119,7 @@ React Router per la navigazione
 
 Pagine principali:
 
-TURISTA FACOLTOSO: Panoramica generale del sistema
+DASHBOARD: Panoramica generale del sistema
 
 Utenti: Gestione utenti (CRUD)
 
@@ -173,7 +173,7 @@ Ricerca feedback alto punteggio
 
 Statistiche valutazioni
 
-Statistiche
+STATISTICHE
 Abitazione più prenotata
 
 Media posti letto
