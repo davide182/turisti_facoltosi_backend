@@ -19,10 +19,6 @@ public class DatabaseConfig {
         Properties props = new Properties();
 
         try (InputStream input = new FileInputStream("db.properties")) {
-            if (input == null) {
-                log.error("File db.properties non trovato nel classpath");
-                throw new RuntimeException("File db.properties non trovato nel classpath");
-            }
             
             props.load(input);
             log.info("File db.properties caricato con successo");

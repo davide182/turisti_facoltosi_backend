@@ -152,6 +152,7 @@ public class HostDao {
         }
     }
     
+
     public void aggiornaContatorePrenotazioni(long idUtente) {
         String countSql = """
             SELECT COUNT(*) as totale 
@@ -185,7 +186,7 @@ public class HostDao {
                         boolean eraSuperHost = rs.getBoolean("isSuperHost");
                         if (!eraSuperHost) {
                             dataDiventatoSuper = new java.sql.Date(System.currentTimeMillis());
-                            log.info("Host ID {} è diventato SUPER HOST! Prenotazioni: {}", idUtente, totPrenotazioni);
+                            log.info("Host ID {} è diventato SUPER HOST! Prenotazioni COMPLETATE: {}", idUtente, totPrenotazioni);
                         }
                     }
                 }
@@ -204,7 +205,7 @@ public class HostDao {
                 pstmt.setLong(4, idUtente); 
                 pstmt.executeUpdate(); 
                 
-                log.debug("Aggiornato host ID {} nel DB: {} prenotazioni, SuperHost: {}", idUtente, totPrenotazioni, diventaSuperHost);
+                log.debug("Aggiornato host ID {} nel DB: {} prenotazioni COMPLETATE, SuperHost: {}", idUtente, totPrenotazioni, diventaSuperHost);
             }
             
         } catch (SQLException e) {
@@ -216,7 +217,13 @@ public class HostDao {
     public List<Host> findHostsConPiuPrenotazioniUltimoMese() {
         List<Host> hosts = new ArrayList<>();
         String sql = """
-            SELECT h.*, COUNT(p.idPrenotazione) as prenotazioni_ultimo_mese
+            SELECT 
+                h.idUtente, 
+                h.codiceHost, 
+                h.isSuperHost, 
+                h.dataDiventatoSuper, 
+                h.totPrenotazioni,
+                COUNT(p.idPrenotazione) as prenotazioni_ultimo_mese
             FROM host h
             JOIN abitazione a ON h.idUtente = a.idUtente
             JOIN prenotazione p ON a.idAbitazione = p.idAbitazione
@@ -231,9 +238,10 @@ public class HostDao {
              ResultSet rs = stmt.executeQuery(sql)) {
             
             while (rs.next()) {
-                hosts.add(mapResultSetToHost(rs));
+                Host host = mapResultSetToHost(rs);
+                hosts.add(host);
             }
-            log.info("Trovati {} host con più prenotazioni ultimo mese nel DB", hosts.size());
+            log.info("Trovati {} host con più prenotazioni COMPLETATE nell'ultimo mese nel DB", hosts.size());
             return hosts;
             
         } catch (SQLException e) {

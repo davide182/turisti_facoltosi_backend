@@ -61,14 +61,13 @@ public class HostService {
             throw new IllegalArgumentException("ID utente non valido");
         }
         
-        hostDao.aggiornaContatorePrenotazioni(idUtente);
-        
         Host host = hostDao.findById(idUtente);
         if (host == null) {
             throw new RuntimeException("Host non trovato con ID utente: " + idUtente);
         }
         
         boolean eraSuperHost = host.isSuperHost();
+        
         hostDao.aggiornaContatorePrenotazioni(idUtente);
         
         Host hostAggiornato = hostDao.findById(idUtente);
@@ -78,6 +77,6 @@ public class HostService {
     }
     
     public List<Host> getHostsConPiuPrenotazioniUltimoMese() {
-        return hostDao.findSuperHosts();
+        return hostDao.findHostsConPiuPrenotazioniUltimoMese();
     }
 }
