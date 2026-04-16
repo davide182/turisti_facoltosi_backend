@@ -16,6 +16,10 @@ public class AbitazioneController {
     private static final Logger log = LoggerFactory.getLogger(AbitazioneController.class);
     private final AbitazioneService abitazioneService = new AbitazioneService();
     
+    public AbitazioneController() {
+    // costruttore vuoto
+    }
+    
     public void create(Context ctx) {
         try {
             Abitazione abitazione = ctx.bodyAsClass(Abitazione.class);

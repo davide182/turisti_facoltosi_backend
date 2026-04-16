@@ -1,6 +1,5 @@
 package com.facoltosituristi.config;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -18,7 +17,7 @@ public class DatabaseConfig {
     public static void loadConfig() {
         Properties props = new Properties();
 
-        try (InputStream input = new FileInputStream("db.properties")) {
+        try (InputStream input = DatabaseConfig.class.getClassLoader().getResourceAsStream("db.properties")) {
             
             props.load(input);
             log.info("File db.properties caricato con successo");
